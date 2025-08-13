@@ -3,73 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diabetes Prediction</title>
+    <title>Diabetes Risk Assessment Tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Times New Roman', Georgia, serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #34495e;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #34495e;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .form-section {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 40px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-description {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        input[type="number"] {
+            padding: 12px 15px;
+            border: 2px solid #bdc3c7;
+            background: #ffffff;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            color: #2c3e50;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #34495e;
+            background: #f8f9fa;
+        }
+
+        input[type="number"]::placeholder {
+            color: #95a5a6;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .submit-section {
+            border-top: 2px solid #bdc3c7;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        button {
+            background: #34495e;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: 2px solid #34495e;
+            transition: all 0.3s ease;
+            font-family: 'Times New Roman', serif;
+        }
+
+        button:hover {
+            background: white;
+            color: #34495e;
+        }
+
+        button:active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        #result-container {
+            max-width: 800px;
+            margin: 30px auto 0;
+            background: white;
+            border: 2px solid #34495e;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .result-header {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-content {
+            padding: 30px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Clinical result styling */
+        .result-low-risk {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            color: #1e8449;
+        }
+
+        .result-moderate-risk {
+            background: #fef9e7;
+            border-left: 5px solid #f39c12;
+            color: #b7950b;
+        }
+
+        .result-high-risk {
+            background: #fadbd8;
+            border-left: 5px solid #e74c3c;
+            color: #c0392b;
+        }
+
+        .result-error {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+        }
+
+        /* Form validation styling */
+        input:invalid {
+            border-color: #e74c3c;
+        }
+
+        input:valid {
+            border-color: #27ae60;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+            color: #6c757d;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .disclaimer h4 {
+            margin-bottom: 10px;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .form-section,
+            .submit-section {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading button::after {
+            content: ' ...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ' .'; }
+            40% { content: ' ..'; }
+            60%, 100% { content: ' ...'; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Diabetes Prediction Form</h1>
-
-    <!-- 
-        The <form> element is the container for all our user inputs.
-        We give it an 'id' so we can easily select it later with JavaScript.
-    -->
-    <form id="prediction-form">
-        <!-- Each input field has a corresponding <label> for usability and accessibility. -->
-        <!-- The 'for' attribute of the label matches the 'id' of the input. -->
-        
-        <!-- The 'name' attribute for each input MUST match the key expected by the Flask API. -->
-        
-        <div>
-            <label for="pregnancies">Pregnancies:</label>
-            <input type="number" id="pregnancies" name="Pregnancies" placeholder="e.g., 6" required>
-        </div>
-        
-        <div>
-            <label for="glucose">Glucose:</label>
-            <input type="number" id="glucose" name="Glucose" placeholder="e.g., 148" required>
-        </div>
-        
-        <div>
-            <label for="blood-pressure">Blood Pressure:</label>
-            <input type="number" id="blood-pressure" name="BloodPressure" placeholder="e.g., 72" required>
-        </div>
-        
-        <div>
-            <label for="skin-thickness">Skin Thickness:</label>
-            <input type="number" id="skin-thickness" name="SkinThickness" placeholder="e.g., 35" required>
-        </div>
-        
-        <div>
-            <label for="insulin">Insulin:</label>
-            <input type="number" id="insulin" name="Insulin" placeholder="e.g., 0" required>
-        </div>
-        
-        <div>
-            <label for="bmi">BMI:</label>
-            <input type="number" id="bmi" name="BMI" step="0.1" placeholder="e.g., 33.6" required>
-        </div>
-        
-        <div>
-            <label for="dpf">Diabetes Pedigree Function:</label>
-            <input type="number" id="dpf" name="DiabetesPedigreeFunction" step="0.001" placeholder="e.g., 0.627" required>
-        </div>
-        
-        <div>
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="Age" placeholder="e.g., 50" required>
-        </div>
-        
-        <div>
-            <!-- 
-                The <button> element creates a clickable button.
-                The type="submit" attribute gives it a special behavior: when clicked,
-                it will attempt to submit the form data. This is the event we will
-                listen for later with JavaScript.
-            -->
-            <button type="submit">Predict</button>
+    <div class="container">
+        <div class="header">
+            <h1>DIABETES RISK ASSESSMENT TOOL</h1>
+            <div class="subtitle">Clinical Predictive Analysis System</div>
         </div>
 
-    </form>
-    <div id="result-container"></div>
+        <form id="prediction-form">
+            <div class="form-section">
+                <div class="section-title">Patient Information & Clinical Parameters</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pregnancies">Number of Pregnancies</label>
+                        <div class="field-description">Total number of pregnancies (including current)</div>
+                        <input type="number" id="pregnancies" name="Pregnancies" placeholder="0" required min="0" max="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="glucose">Plasma Glucose Concentration</label>
+                        <div class="field-description">2-hour oral glucose tolerance test (mg/dL)</div>
+                        <input type="number" id="glucose" name="Glucose" placeholder="148" required min="0" max="300">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="blood-pressure">Diastolic Blood Pressure</label>
+                        <div class="field-description">Diastolic blood pressure measurement (mmHg)</div>
+                        <input type="number" id="blood-pressure" name="BloodPressure" placeholder="72" required min="0" max="200">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skin-thickness">Triceps Skin Fold Thickness</label>
+                        <div class="field-description">Measurement in millimeters (mm)</div>
+                        <input type="number" id="skin-thickness" name="SkinThickness" placeholder="35" required min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insulin">Serum Insulin Level</label>
+                        <div class="field-description">2-hour serum insulin (mu U/ml)</div>
+                        <input type="number" id="insulin" name="Insulin" placeholder="0" required min="0" max="1000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bmi">Body Mass Index</label>
+                        <div class="field-description">Weight in kg/(height in m)²</div>
+                        <input type="number" id="bmi" name="BMI" step="0.1" placeholder="33.6" required min="10" max="70">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dpf">Diabetes Pedigree Function</label>
+                        <div class="field-description">Genetic predisposition factor (0.0 - 2.5)</div>
+                        <input type="number" id="dpf" name="DiabetesPedigreeFunction" step="0.001" placeholder="0.627" required min="0" max="2.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Patient Age</label>
+                        <div class="field-description">Age in years</div>
+                        <input type="number" id="age" name="Age" placeholder="50" required min="1" max="120">
+                    </div>
+                </div>
+
+                <div class="disclaimer">
+                    <h4>Medical Disclaimer</h4>
+                    This tool is designed for educational and research purposes only. The predictions generated are based on statistical models and should not be used as a substitute for professional medical diagnosis, treatment, or advice. Always consult with qualified healthcare professionals for medical decisions and diabetes management.
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit">GENERATE RISK ASSESSMENT</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="result-container" style="display: none;">
+        <div class="result-header">ASSESSMENT RESULTS</div>
+        <div class="result-content" id="result-content">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
