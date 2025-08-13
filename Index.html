@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+</head>
+<body>
+    <h1>Diabetes Prediction Form</h1>
+
+    <!-- 
+        The <form> element is the container for all our user inputs.
+        We give it an 'id' so we can easily select it later with JavaScript.
+    -->
+    <form id="prediction-form">
+        <!-- Each input field has a corresponding <label> for usability and accessibility. -->
+        <!-- The 'for' attribute of the label matches the 'id' of the input. -->
+        
+        <!-- The 'name' attribute for each input MUST match the key expected by the Flask API. -->
+        
+        <div>
+            <label for="pregnancies">Pregnancies:</label>
+            <input type="number" id="pregnancies" name="Pregnancies" placeholder="e.g., 6" required>
+        </div>
+        
+        <div>
+            <label for="glucose">Glucose:</label>
+            <input type="number" id="glucose" name="Glucose" placeholder="e.g., 148" required>
+        </div>
+        
+        <div>
+            <label for="blood-pressure">Blood Pressure:</label>
+            <input type="number" id="blood-pressure" name="BloodPressure" placeholder="e.g., 72" required>
+        </div>
+        
+        <div>
+            <label for="skin-thickness">Skin Thickness:</label>
+            <input type="number" id="skin-thickness" name="SkinThickness" placeholder="e.g., 35" required>
+        </div>
+        
+        <div>
+            <label for="insulin">Insulin:</label>
+            <input type="number" id="insulin" name="Insulin" placeholder="e.g., 0" required>
+        </div>
+        
+        <div>
+            <label for="bmi">BMI:</label>
+            <input type="number" id="bmi" name="BMI" step="0.1" placeholder="e.g., 33.6" required>
+        </div>
+        
+        <div>
+            <label for="dpf">Diabetes Pedigree Function:</label>
+            <input type="number" id="dpf" name="DiabetesPedigreeFunction" step="0.001" placeholder="e.g., 0.627" required>
+        </div>
+        
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="Age" placeholder="e.g., 50" required>
+        </div>
+        
+        <div>
+            <!-- 
+                The <button> element creates a clickable button.
+                The type="submit" attribute gives it a special behavior: when clicked,
+                it will attempt to submit the form data. This is the event we will
+                listen for later with JavaScript.
+            -->
+            <button type="submit">Predict</button>
+        </div>
+
+    </form>
+    <div id="result-container"></div>
+    <script src="script.js"></script>
+</body>
+</html>
